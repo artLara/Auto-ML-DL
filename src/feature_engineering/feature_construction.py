@@ -38,34 +38,6 @@ def normalize(df: pd.DataFrame,
     return df_norm
 
 
-def split_dataframe(df: pd.DataFrame,
-                    cfg: dict) -> None:
-    """
-    Noramlization of data
-
-    Keyword arguments:
-      df(pd.Dataframe): dataframe of dataset
-      report(Report): instance of Report
-      log_level(int): loggin lavel
-
-      Returns: DataFrame
-    """
-    train_dir = cfg['data']['annotations']['train']
-    test_dir = cfg['data']['annotations']['test']
-    train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
-    
-    if cfg['run']['logging_level'] > 0:
-        logger.info(f'[SplitDataframe] train dir:{train_dir}')
-        logger.info(f'[SplitDataframe] test dir:{test_dir}')
-        print(train_df.head())
-        print(test_df.head())
-
-    save_csv(train_df, cfg['data']['annotations']['train'])
-    save_csv(test_df, cfg['data']['annotations']['test'])
-
-    return train_df, test_df
-
-
 def df2array(df: pd.DataFrame) -> np.ndarray:
     y = df['default payment next month'].to_numpy()
     x = df.drop('default payment next month', axis=1).to_numpy()

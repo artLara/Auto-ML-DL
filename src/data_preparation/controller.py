@@ -1,13 +1,25 @@
-from src.data_preparation.data_cleaning import explore, clean
+import logging
+
 import pandas as pd
 
-def run_pipeline(cfg: dict, report) -> None:
-    """Run pipeline based on configuration file
-    
-    cfg (dict): configuration dict"""
-    ds_dir = cfg['data']['annotations']['full']
-    df = pd.read_excel(ds_dir)
-    explore(df, report, cfg['run']['logging_level'])
-    df = clean(df, report, cfg['run']['logging_level'])
+from src.data_preparation.tabular import explore, clean
+from src.data_preparation.data_cleaning.vision.vision import Vision
+from src.data_preparation.data_cleaning.labels.Labels import Labels
 
-    return df
+TASKS = {
+    'vision': Vision,
+    'labels': Labels,
+}
+
+def run_pipeline(cfg: dict, report) -> None:
+    """Run pipeline based on configuration file    
+    cfg (dict): configuration dict"""
+
+    task = cfg['data']['preprocessing']
+    assert task in TASKS, '[run_pipeline] task {task} does not exists'
+    TASKS[task].clean(cfg, report)
+    TASKS['labels'].clean(cfg, report)
+    
+
+    #To do:
+    # Write data augmentation code

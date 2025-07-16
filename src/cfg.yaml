@@ -82,6 +82,34 @@ algorithms:
       - 'entropy'
     
 data:
+  preprocessing: 'vision' #Options texts, tabular, graphs, etc 
+  pipe_details:
+    #For vision
+    file: 'frames' #Read from frames in dir
+    # file: 'video' #Read from video file
+
+    norm: False
+    color: 'rgb' #rgb, gray
+    resize: [240, 240, 3] #height, width and channels
+    resize_aspect_ratio: True
+    # - iluminacion: True
+    # - filters: ['gaussioan', 'normal', 'etc'] 
+
+    #For text
+
+  augmentation:
+    offline:
+      #Vision
+      horizontal_flip: 1.0 #Probability to do it.
+      vertical_flip: 0.0
+      # jitter options
+
+    online:
+      horizontal_flip: 0.0 #Probability to do it.
+      vertical_flip: 0.0
+      # jitter options
+  
+  type: 'videos'
   loader: 'regression'
   source:
     full: 'data/__processed/uci_dataset'
@@ -90,9 +118,19 @@ data:
     test: null
 
   annotations:
-    full: 'data/raw/default_of_credit_card_clients.xls'
-    train: 'data/__processed/train.csv'
-    test: 'data/__processed/test.csv'
+    external_path: '/home/lara/Documents/tts/ansiedad-vision/mexican_anxiety_detection/data/raw/'
+    # external_path: '/home/lara/Documents/tts/ansiedad-vision/tmp_dataset/data/raw/'
+
+    full: 'data/raw/tmp.csv' #Path of csv file with all dataset information
+    train: 'data/processed/train.csv'
+    test: 'data/processed/test.csv'
+    validation: 'data/processed/validation.csv'
+
+    target: 'level' #Name of column target
+    splits:
+      train: 0.7
+      test: 0.3
+      validation: 0.0
 
 details:
   description : 'Busqueda del mejor algoritmo utilizando AutoML'
