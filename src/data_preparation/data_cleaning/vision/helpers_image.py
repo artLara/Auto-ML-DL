@@ -1,4 +1,5 @@
 import math
+import random
 
 import cv2
 import numpy as np
@@ -132,18 +133,26 @@ def resize_image_aspect_ratio(img: np.ndarray,
                             height = height)
     return resized
 
+def __get_prob_uniform(start: float = 0.0,
+                       end: float = 1.0) -> float:
+        return random.uniform(start, end)
+
 
 def flip_image(img: np.ndarray,
-               flip_code: int):
+               flip_code: int,
+               prob: float = 1.0):
     """Flip image
     Keyword arguments:
     img (np.ndarray): image to resize.
     flip_code (int): 0 horizonally, 1 vertically, -1 both.
-    
+    prob (float): probability to do it. Default 1.0, values between [0.0, 1.0]
+
     Return: np.ndarray
     """
-    return cv2.flip(img, flip_code)
+    if prob >= __get_prob_uniform():
+        return cv2.flip(img, flip_code)
 
+    return img
 
 def normalize(img: np.ndarray):
     return img/255.0

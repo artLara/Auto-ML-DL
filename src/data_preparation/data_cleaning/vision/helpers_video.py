@@ -1,3 +1,4 @@
+import random
 import numpy as np
 from pathlib import Path
 
@@ -29,7 +30,7 @@ def read_frames_from_dir(dir: str,
     for im_file in img_names:
         img = helpers_image.read_image(dir/im_file,
                                     color)
-        img = ic.process_image(cfg, img) #Apply image preprocessing
+        img = ic.process_image(cfg, img) #Apply image preprocessing in other place
         frames.append(img)
     
     return frames
@@ -46,4 +47,24 @@ def write_frames_in_dir(dir: str|Path,
         helpers_image.write_image(frame, img_name)
         
 
+def __get_prob_uniform(start: float = 0.0,
+                       end: float = 1.0) -> float:
+        return random.uniform(start, end)
+
+def flip_video(frames: list,
+               flip_code: int,
+               prob: float = 1.0) -> list:
+    """Flip image
+    Keyword arguments:
+    img (np.ndarray): image to resize.
+    flip_code (int): 0 horizonally, 1 vertically, -1 both.
+    prob (float): probability to do it. Default 1.0, values between [0.0, 1.0]
+
+    Return: np.ndarray
+    """
+    if prob >= __get_prob_uniform():
+        frames = [helpers_image.flip_image(frame, flip_code) for frame in frames]
+
+    return frames
         
+    

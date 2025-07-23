@@ -18,6 +18,22 @@ def load_file_names(cfg: dict)->list:
     return df['filename'].tolist()
 
 
+def load_file_names_from_csv(path: str)->list:
+    """
+    Load file names from csv file with column name "filename".
+
+    Keyword arguments:
+    path(str): path of csv file.
+
+    Return list
+    """
+    file_dir = Path(path)
+    assert file_dir.exists(), f'full annotations is not valid path: {file_dir}'
+    df = pd.read_csv(file_dir)
+
+    return df['filename'].tolist()
+
+
 def read_file_names_from_dir(dir: str|Path) -> list:
     """
     Read all files from a specific path
@@ -25,5 +41,12 @@ def read_file_names_from_dir(dir: str|Path) -> list:
     """
     dir = Path(dir)
     file_names = sorted(dir.glob('*.jpg'))
+    
     return file_names
 
+
+def augment_labels(labels: list,
+                   column: str,
+                   cfg: dict) -> None:
+    """
+    """

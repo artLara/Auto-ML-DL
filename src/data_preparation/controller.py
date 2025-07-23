@@ -19,7 +19,5 @@ def run_pipeline(cfg: dict, report) -> None:
     assert task in TASKS, '[run_pipeline] task {task} does not exists'
     TASKS[task].clean(cfg, report)
     TASKS['labels'].clean(cfg, report)
+    TASKS[task].data_augmentation(cfg, report)
     
-
-    #To do:
-    # Write data augmentation code
